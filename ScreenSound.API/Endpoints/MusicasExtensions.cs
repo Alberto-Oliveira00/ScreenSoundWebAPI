@@ -1,6 +1,7 @@
 ﻿namespace ScreenSound.API.Endpoints;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ScreenSound.API.Requests;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 using System.Data.SqlTypes;
@@ -28,8 +29,10 @@ public static class MusicasExtensions
         });
 
         app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal,
-            [FromBody] Musica musica) =>
+            [FromBody] MusicaRequest musicaRequest) =>
         {
+            var musica = new Musica(musicaRequest.nome, musicaRequest.anoLancamento, musicaRequest.ArtistaId);
+
             dal.Adicionar(musica);
             return Results.Ok();
         });
