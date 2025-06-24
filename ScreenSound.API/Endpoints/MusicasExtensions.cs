@@ -48,14 +48,14 @@ public static class MusicasExtensions
 
         });
 
-        app.MapPut("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) => {
-            var musicaAAtualizar = dal.RecuperarPor(a => a.Id == musica.Id);
+        app.MapPut("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequestEdit musicaRequestEdit) => {
+            var musicaAAtualizar = dal.RecuperarPor(a => a.Id == musicaRequestEdit.Id);
             if (musicaAAtualizar is null)
             {
                 return Results.NotFound();
             }
-            musicaAAtualizar.Nome = musica.Nome;
-            musicaAAtualizar.AnoLancamento = musica.AnoLancamento;
+            musicaAAtualizar.Nome = musicaRequestEdit.nome;
+            musicaAAtualizar.AnoLancamento = musicaRequestEdit.anoLancamento;
 
             dal.Atualizar(musicaAAtualizar);
             return Results.Ok();
