@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ScreenSound.API.Requests;
+using ScreenSound.API.Response;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 using System.Data.SqlTypes;
@@ -10,7 +11,17 @@ using System.Text.Json.Serialization;
 
 public static class MusicasExtensions
 {
-	public static void AddEndPointMusicas(this WebApplication app, JsonSerializerOptions jsonSerializerOptions)
+    private static ICollection<MusicaResponse> EntityListToResponseList(IEnumerable<Musica> musicaList)
+    {
+        return musicaList.Select(a => EntityToResponse(a)).ToList();
+    }
+
+    private static MusicaResponse EntityToResponse(Musica musica)
+    {
+        return new MusicaResponse(musica.Id, musica.Nome!, musica.Artista!.Id, musica.Artista.Nome);
+    }
+
+    public static void AddEndPointMusicas(this WebApplication app, JsonSerializerOptions jsonSerializerOptions)
 	{
         app.MapGet("/Musicas", ([FromServices] DAL<Musica> dal) =>
         {

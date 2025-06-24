@@ -1,16 +1,26 @@
 ﻿namespace ScreenSound.API.Endpoints;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ScreenSound.API.Requests;
+using ScreenSound.API.Response;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
 using System.Text.Json;
-using ScreenSound.API.Requests;
 
 public static class ArtistaExtensions
 {
-	public static void AddEndPointsArtistas(this WebApplication app, JsonSerializerOptions jsonSerializerOptions)
+    private static ICollection<ArtistaResponse> EntityListToResponseList(IEnumerable<Artista> listaDeArtistas)
+    {
+        return listaDeArtistas.Select(a => EntityToResponse(a)).ToList();
+    }
+
+    private static ArtistaResponse EntityToResponse(Artista artista)
+    {
+        return new ArtistaResponse(artista.Id, artista.Nome, artista.Bio, artista.FotoPerfil);
+    }
+
+    public static void AddEndPointsArtistas(this WebApplication app, JsonSerializerOptions jsonSerializerOptions)
 	{
         app.MapGet("/Artistas", ([FromServices] DAL<Artista> dal) =>
         {
@@ -52,16 +62,15 @@ public static class ArtistaExtensions
         });
 
 
-        app.MapPut("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody] Artista artista) =>
+        app.MapPut("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody] ArtistaRequestEdit artistaRequestEdit) =>
         {
-            var artistaAAtualizar = dal.RecuperarPor(a => a.Id == artista.Id);
+            var artistaAAtualizar = dal.RecuperarPor(a => a.Id == artistaRequestEdit.Id);
             if (artistaAAtualizar is null)
             {
                 return Results.NotFound();
             }
-            artistaAAtualizar.Nome = artista.Nome;
-            artistaAAtualizar.Bio = artista.Bio;
-            artistaAAtualizar.FotoPerfil = artista.FotoPerfil;
+            artistaAAtualizar.Nome = artistaRequestEdit.nome;
+            artistaAAtualizar.Bio = artistaRequestEdit.bio;
 
             dal.Atualizar(artistaAAtualizar);
             return Results.Ok();
