@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ScreenSound.Modelos;
+using ScreenSound.Shared.Modelos.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,9 @@ public class ScreenSoundContext: DbContext
 {
     public DbSet<Artista> Artistas { get; set; }
     public DbSet<Musica> Musicas { get; set; }
+    public DbSet<Genero> Generos { get; set; }
 
-    private string connectionString = "Data Source=Bebeto\\SQLSERVER;Integrated Security=True;Trust Server Certificate=True;Application Name=vscode-mssql;Application Intent=ReadWrite";
+    private string connectionString = "Data Source=Bebeto\\SQLSERVER;Initial Catalog=ScreenSoundV0; Integrated Security=True;Trust Server Certificate=True;Application Name=vscode-mssql;Application Intent=ReadWrite";
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
