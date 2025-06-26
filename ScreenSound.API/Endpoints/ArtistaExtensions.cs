@@ -27,9 +27,10 @@ public static class ArtistaExtensions
             return Results.Json(dal.Listar(), jsonSerializerOptions);
         });
 
-        app.MapGet("/Artistas/{nome}", ([FromServices] DAL<Artista> dal, string nome) =>
+        app.MapGet("/Artistas/{nome}", ([FromServices] DAL<Artista> dal,
+                                                            [FromServices] ScreenSoundContext context,
+                                                            string nome) =>
         {
-            var context = new ScreenSoundContext();
             var artista = context.Artistas
                                   .Include(a => a.Musicas)
                                   .FirstOrDefault(a => a.Nome.ToUpper().Equals(nome.ToUpper()));
