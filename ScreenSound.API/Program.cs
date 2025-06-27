@@ -20,6 +20,19 @@ builder.Services.AddTransient<DAL<Artista>>();
 builder.Services.AddTransient<DAL<Musica>>();
 builder.Services.AddTransient<DAL<Genero>>();
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("BlazorAppOrigin", // Nome da sua política CORS
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:7117") // <<<< USE A URL EXATA DA SUA ORIGEM BLazor
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -37,5 +50,7 @@ app.AddEndPointGeneros(jsonSerializerOptions);
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseCors("BlazorAppOrigin");
 
 app.Run();
