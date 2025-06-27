@@ -111,3 +111,87 @@ div.mud-main-content.main-content {
 header.mud-appbar.mud-appbar-fixed-top.mud-elevation-2.mud-theme-surface {
     background-color: rgba(55,55,64,1);
 }
+
+/* --- INÍCIO: Sobrescrições ESSENCIAIS para o MudBlazor Grid Responsivo --- */
+
+/* **PRIORIDADE MÁXIMA:** Corrigir a regra problemática do MudBlazor.min.css para xs-3 */
+/* Esta regra anulará o comportamento de 100% de largura para xs-3 */
+.mud-grid-item-xs-3 {
+    /* Define o comportamento correto para 3 colunas (25%) */
+    flex-basis: 25% !important;
+    max-width: 25% !important;
+    /* Ajuste de espaçamento, se aplicável */
+    padding: var(--mud-grid-spacing-sm, 12px) !important;
+    box-sizing: border-box !important;
+    flex-grow: 0 !important;
+    /* Remover quaisquer margens problemáticas, se houver */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Garante que o MudGrid seja um container flexível com quebra de linha */
+.mud-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    /* Opcional: Remover margens negativas que podem causar problemas em alguns layouts */
+    margin-left: calc(-1 * var(--mud-grid-spacing-sm, 12px)) !important;
+    margin-right: calc(-1 * var(--mud-grid-spacing-sm, 12px)) !important;
+}
+
+/* Base para todos os itens do grid (garante box-sizing correto e que pode encolher) */
+.mud-grid-item {
+    box-sizing: border-box !important; /* Essencial para incluir padding e borda na largura */
+    padding: var(--mud-grid-spacing-sm, 12px) !important; /* Adiciona padding de espaçamento */
+    min-width: 0 !important; /* Permite que o item encolha */
+    flex-grow: 0 !important; /* Impede que os itens cresçam desnecessariamente */
+}
+
+/* Regra para telas extra-pequenas (xs): 1 coluna (largura total) */
+/* Isso se aplica quando a largura da tela é menor que 600px */
+.mud-grid-item-xs-12 {
+    flex-basis: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Regra para telas pequenas (sm): 2 colunas */
+/* Isso se aplica quando a largura da tela é >= 600px */
+@media (min-width: 600px) {
+    .mud-grid-item-sm-6 {
+        flex-basis: 50% !important;
+        max-width: 50% !important;
+    }
+}
+
+/* Regra para telas médias (md): 3 colunas */
+/* Isso se aplica quando a largura da tela é >= 960px */
+@media (min-width: 960px) {
+    .mud-grid-item-md-4 {
+        flex-basis: 33.333333% !important;
+        max-width: 33.333333% !important;
+    }
+}
+
+/* Regra para telas grandes (lg): 4 colunas */
+/* Isso se aplica quando a largura da tela é >= 1280px */
+@media (min-width: 1280px) {
+    .mud-grid-item-lg-3 {
+        flex-basis: 25% !important;
+        max-width: 25% !important;
+    }
+}
+
+/* Opcional: Garante que as imagens dentro dos cards sejam responsivas e não "estourem" */
+.mud-card-media img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+}
+
+/* Opcional: Garante que o texto longo dentro dos cards quebre corretamente */
+.mud-card-header .mud-typography,
+.mud-card-content .mud-typography {
+    word-break: break-word !important; /* Quebra palavras longas se necessário */
+    overflow-wrap: break-word !important; /* Alternativa para word-break */
+}
+
+/* --- FIM: Sobrescrições ESSENCIAIS para o MudBlazor Grid Responsivo --- */

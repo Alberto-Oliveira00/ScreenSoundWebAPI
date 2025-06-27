@@ -1,14 +1,18 @@
 ﻿@page "/Artistas"
 @inject ArtistaAPI artistaAPI
+
 <h3>Artistas</h3>
 @if(artistas is not null)
 {
-    foreach(var artista in artistas)
-    {
-        <p>@artista.Nome</p>
-    }
+    <mudGrid Spacing="3" Justify="Justify.Center">
+        @foreach(var artista in artistas)
+        {
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <CardArtista Artista="artista"/>    
+            </MudItem>
+        }
+    </mudGrid>
 }
-
 
 @code {
     private ICollection<ArtistaResponse>? artistas;
