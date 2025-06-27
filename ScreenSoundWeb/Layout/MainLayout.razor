@@ -1,16 +1,27 @@
-﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+﻿@using ScreenSound.Web.Layout
+@inherits LayoutComponentBase
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+<MudThemeProvider IsDarkMode="true" Theme="currentTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-        <article class="content px-4">
+<MudLayout>
+    <MudAppBar Color="Color.Surface" Fixed="true" Elevation="2">
+        <MudImage Src="images/screensound-logo.png"></MudImage>
+    </MudAppBar>
+    <MudDrawer Open="true" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu></NavMenu>
+    </MudDrawer>
+    <MudMainContent>
+        <MudMainContent class="main-content pa-10">
             @Body
-        </article>
-    </main>
-</div>
+        </MudMainContent>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private MudTheme currentTheme = new MudTheme()
+    {
+        PaletteDark = ScreendsoundPallete.CreatePallete
+    };
+}
