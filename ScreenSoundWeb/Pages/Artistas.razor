@@ -4,14 +4,14 @@
 <h3>Artistas</h3>
 @if(artistas is not null)
 {
-    <mudGrid Spacing="3" Justify="Justify.Center">
+    <MudGrid Spacing="3" Justify="Justify.Center">
         @foreach(var artista in artistas)
         {
             <MudItem xs="12" sm="6" md="4" lg="3">
                 <CardArtista Artista="artista"/>    
             </MudItem>
         }
-    </mudGrid>
+    </MudGrid>
 }
 
 @code {

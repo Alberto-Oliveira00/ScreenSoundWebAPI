@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using ScreenSoundWeb.Requests;
 using ScreenSoundWeb.Response;
 using System.Net.Http; 
 using System.Net.Http.Json;
@@ -17,5 +18,10 @@ public class ArtistaAPI
     public async Task<ICollection<ArtistaResponse>?> GetArtistasAsync()
     {
         return await _httpClient.GetFromJsonAsync<ICollection<ArtistaResponse>>("artistas");
+    }
+
+    public async Task AddArtistaAsync(ArtistaRequest artista)
+    {
+        await _httpClient.PostAsJsonAsync("artistas", artista);
     }
 }
