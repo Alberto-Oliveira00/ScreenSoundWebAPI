@@ -22,14 +22,19 @@
                       Required="true"
                       RequiredError="Campo obrigatório." />
 
-        <div class="d-flex align-center justify-space-between mt-4">
-            <MudButton Variant="Variant.Filled"
-                       @onclick="Deletar"
-                       Color="Color.Secondary"
-                       Class="ml-auto">
-                Deletar
-            </MudButton>
-        </div>
+        <div class="d-flex justify-end gap-4 mt-8"> 
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Error" 
+                           @onclick="Deletar">
+                    Deletar
+                </MudButton>
+                <MudButton Variant="Variant.Filled"
+                        Color="Color.Primary"
+                        @onclick="Editar">
+                     Salvar Alterações
+                </MudButton>
+                
+            </div>
 
     </MudForm>
 </MudPaper>
@@ -52,9 +57,15 @@
 
     private async Task  Deletar()
     {
-        
         await artistaAPI.DeleteArtistaAsync(Artista!.Id);
         navigationManager.NavigateTo("/Artistas");
     }
 
+    private async Task Editar()
+    {
+        var artistaAtualizado = new ArtistaRequestEdit(Artista!.Id, nome!, biografia!);
+
+        await artistaAPI.EditarArtistaAsync(artistaAtualizado);
+        navigationManager.NavigateTo("/Artistas");
+    }
 }
