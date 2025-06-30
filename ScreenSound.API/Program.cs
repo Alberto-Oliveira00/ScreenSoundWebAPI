@@ -44,6 +44,8 @@ var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
     WriteIndented = true
 };
 
+app.UseStaticFiles();
+
 app.AddEndPointsArtistas(jsonSerializerOptions);
 app.AddEndPointMusicas(jsonSerializerOptions);
 app.AddEndPointGeneros(jsonSerializerOptions);
