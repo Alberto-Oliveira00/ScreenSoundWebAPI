@@ -1,5 +1,54 @@
-﻿<h3>CadastrarMusica</h3>
+﻿@page "/CadastrarMusica"
+
+<MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
+
+    <MudText Class="mt-8" Typo="Typo.h4">Cadastro de Música</MudText>
+
+    <MudForm>
+
+        <MudTextField Class="mt-4" T="string" Placeholder="Nome da música/canção"
+                      @bind-Value="nome"
+                      Variant="Variant.Outlined"
+                      Required="true"
+                      RequiredError="Campo obrigatório." />
+        <MudSelect Class="mt-4" T="ArtistaResponse" Label="Artistas"
+                   Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter ">
+   
+        </MudSelect>
+
+        <MudTextField Class="mt-4" T="int" Label="Ano de lançamento"
+                      Variant="Variant.Outlined"
+                      @bind-Value="anoLancamento"
+                      Required="true"
+                      RequiredError="Campo obrigatório."
+                      InputType="InputType.Number" />
+
+        <MudSelect Class="mt-4" T="string" Label="Gêneros"
+                   Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+
+        </MudSelect>
+
+        <div class="d-flex align-center justify-space-between mt-4">
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Class="ml-auto">
+                Cadastrar
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Info"
+                       Class="ml-3">
+                Voltar
+            </MudButton>
+        </div>
+
+    </MudForm>
+
+</MudPaper>
 
 @code {
+    private string? nome;
+    private int anoLancamento;
 
+    private ICollection<ArtistaResponse>? artistas;
+    private ICollection<GeneroResponse>? generos;
 }

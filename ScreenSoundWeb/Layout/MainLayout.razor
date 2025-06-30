@@ -4,6 +4,7 @@
 <MudThemeProvider IsDarkMode="true" Theme="currentTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
+<MudPopoverProvider />
 
 <MudLayout>
     <MudAppBar Color="Color.Surface" Fixed="true" Elevation="2">
@@ -13,7 +14,7 @@
         <NavMenu></NavMenu>
     </MudDrawer>
     <MudMainContent>
-        <MudMainContent class="main-content pa-10">
+        <MudMainContent class="mud-main-content main-content pa-10">
             @Body
         </MudMainContent>
     </MudMainContent>
