@@ -12,6 +12,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddMudServices();
 
 builder.Services.AddTransient<ArtistaAPI>();
+builder.Services.AddScoped<GeneroAPI>();
+builder.Services.AddScoped<MusicasAPI>();
 
 builder.Services.AddHttpClient("API", client =>
 {

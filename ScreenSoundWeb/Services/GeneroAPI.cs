@@ -1,7 +1,7 @@
 ﻿using ScreenSoundWeb.Response;
 using System.Net.Http.Json;
 
-namespace ScreenSound.Web.Services;
+namespace ScreenSoundWeb.Services;
 
 public class GeneroAPI
 {
