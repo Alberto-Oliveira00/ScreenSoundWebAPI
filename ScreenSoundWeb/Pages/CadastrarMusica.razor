@@ -26,7 +26,7 @@
             {
                 @foreach (var artista in artistas)
                 {
-                   <MudSelectItem Value="artista" />
+                    <MudSelectItem Value="@artista">@artista.Nome</MudSelectItem>
                 }
             }
         </MudSelect>
@@ -44,12 +44,14 @@
                     Variant="Variant.Outlined" 
                     ValueChanged="GeneroSelecionado" 
                     AnchorOrigin="Origin.BottomCenter"
-                    TransformOrigin="Origin.TopCenter">
+                    TransformOrigin="Origin.TopCenter"
+                    MultiSelection="true">
+            
             @if (generos is not null)
             {
                 @foreach (var genero in generos)
                 {
-                    <MudSelectItem Value="genero" />
+                    <MudSelectItem Value="@genero">@genero.Nome</MudSelectItem>
                 }
             }
         </MudSelect>

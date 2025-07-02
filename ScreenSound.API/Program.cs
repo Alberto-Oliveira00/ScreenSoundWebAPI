@@ -47,7 +47,7 @@ var jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
 app.UseStaticFiles();
 
 app.AddEndPointsArtistas(jsonSerializerOptions);
-app.AddEndPointMusicas(jsonSerializerOptions);
+app.AddEndPointsMusicas();
 app.AddEndPointGeneros(jsonSerializerOptions);
 
 app.UseSwagger();
