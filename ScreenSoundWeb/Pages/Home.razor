@@ -1,7 +1,78 @@
 ﻿@page "/"
+@inject ArtistaAPI artistaAPI
+@inject MusicasAPI musicaAPI
+@inject NavigationManager nav
 
-<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+    <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-6">🎵 ScreenSound</MudText>
 
-Welcome to your new app.
+    <!-- Seção de Artistas -->
+    <MudText Typo="Typo.h5" Class="mb-4">Artistas em destaque</MudText>
+    <MudGrid GutterSize="5px">
+        @if (artistas?.Any() == true)
+        {
+            foreach (var artista in artistas.Take(4))
+            {
+                var imagem = !string.IsNullOrWhiteSpace(artista.FotoPerfil)
+                ? $"https://localhost:7230{artista.FotoPerfil}"
+                : "images/cardArtista.jpg";
+
+                <MudItem xs="12" sm="6" md="3">
+                    <MudCard>
+                        <MudCardMedia Image="@imagem" />
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">@artista.Nome</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        }
+    </MudGrid>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="my-6" OnClick="@(() => nav.NavigateTo("/Artistas"))">
+        Ver todos os artistas
+    </MudButton>
+
+    <!-- Seção de Músicas -->
+    <MudText Typo="Typo.h5" Class="mb-4">Músicas em destaque</MudText>
+    <MudGrid GutterSize="24px">
+        @if (musicas?.Any() == true)
+        {
+            foreach (var musica in musicas.Take(4))
+            {
+                var artista = artistas?.FirstOrDefault(a => a.Nome == musica.NomeArtista);
+                var imagem = !string.IsNullOrWhiteSpace(artista?.FotoPerfil)
+                ? $"https://localhost:7230{artista.FotoPerfil}"
+                : "images/cardArtista.jpg";
+
+                <MudItem xs="12" sm="6" md="3">
+                    <MudCard>
+                        <MudCardMedia Image="@imagem" />
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">@musica.Nome</MudText>
+                            <MudText Typo="Typo.body2">Artista: @musica.NomeArtista</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        }
+    </MudGrid>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mt-6" OnClick="@(() => nav.NavigateTo("/MusicasPorArtista"))">
+        Ver todas as músicas
+    </MudButton>
+
+
+@code {
+    private List<ArtistaResponse> artistas = new();
+    private List<MusicaResponse> musicas = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var artistasResponse = await artistaAPI.GetArtistasAsync();
+        var musicasResponse = await musicaAPI.GetMusicasAsync();
+
+        if (artistasResponse != null) artistas = artistasResponse.ToList();
+        if (musicasResponse != null) musicas = musicasResponse.ToList();
+    }
+}
