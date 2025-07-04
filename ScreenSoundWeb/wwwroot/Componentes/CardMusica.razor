@@ -1,5 +1,7 @@
-﻿<MudCard>
-    <MudCardMedia Image="images/cardArtista.png"></MudCardMedia>
+﻿@inject ArtistaAPI artistaAPI
+
+<MudCard>
+    <MudCardMedia Image=@Imagem></MudCardMedia>
     <MudCardHeader>
         <CardHeaderContent>
             <MudText Typo="Typo.h6">@Musica!.Nome</MudText>
@@ -20,4 +22,17 @@
     [Parameter]
     public MusicaResponse? Musica { get; set; }
 
+    public string Imagem { get; set; } = "images/cardArtista.jpg";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(Musica?.NomeArtista))
+        {
+            var artista = await artistaAPI.GetArtistaPorNomeAsync(Musica.NomeArtista);
+            if (!string.IsNullOrWhiteSpace(artista?.FotoPerfil))
+            {
+                Imagem = $"https://localhost:7230{artista.FotoPerfil}";
+            }
+        }
+    }
 }
