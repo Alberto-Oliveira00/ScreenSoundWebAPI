@@ -7,7 +7,8 @@ using ScreenSound.API.Response;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 using System.Text.Json;
-
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 public static class ArtistaExtensions
 {
     private static ICollection<ArtistaResponse> EntityListToResponseList(IEnumerable<Artista> listaDeArtistas)
@@ -42,24 +43,41 @@ public static class ArtistaExtensions
         });
 
         app.MapPost("/Artistas",async ([FromServices]IHostEnvironment env, [FromServices] DAL<Artista> dal,
-            [FromBody] ArtistaRequest artistaRequest) =>
+            [FromBody] ArtistaRequest artistaRequest, IConfiguration configuration) =>
         {
             var nome = artistaRequest.nome.Trim();
-            var imagemArtista = DateTime.Now.ToString("ddMMyyyyhhss") + "." + nome + ".jpeg";
+            var imagemArtistaNomeArquivo = DateTime.Now.ToString("ddMMyyyyhhss") + "_" + nome + ".jpeg";
 
-            var path = Path.Combine(env.ContentRootPath, "wwwroot", "FotosPerfil", imagemArtista);
+            var connectionString = configuration.GetConnectionString("AzureBlobStorageConnection");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                return Results.Problem("A Connection String do Azure Blob Storage não foi configurada.");
+            }
 
+            var containerName = "fotosartistas";
+
+            // 2. Crie um cliente para interagir com o Blob Storage
+            var blobServiceClient = new BlobServiceClient(connectionString);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            await blobContainerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);
+
+            var blobClient = blobContainerClient.GetBlobClient(imagemArtistaNomeArquivo);
+
+            // 4. Faça o upload da imagem
             using MemoryStream ms = new MemoryStream(Convert.FromBase64String(artistaRequest.fotoPerfil!));
-            using FileStream fs = new(path, FileMode.Create);
-            await ms.CopyToAsync(fs);
+            await blobClient.UploadAsync(ms, overwrite: true); // 'overwrite: true' permite substituir se já existir um blob com o mesmo nome
+
+            // 5. Obtenha a URL pública do blob
+            var blobUrl = blobClient.Uri.ToString(); // Esta é a URL que será salva no DB e usada pelo frontend
 
             var artista = new Artista(artistaRequest.nome, artistaRequest.bio)
             {
-                FotoPerfil = $"/FotosPerfil/{imagemArtista}"
+                FotoPerfil = blobUrl // Salva a URL completa do blob no banco de dados
             };
 
             dal.Adicionar(artista);
-            return Results.Ok();
+            return Results.Ok(artista);
         });
 
         app.MapDelete("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id) =>

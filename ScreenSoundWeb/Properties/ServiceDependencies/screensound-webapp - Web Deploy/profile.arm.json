@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "screensound-bebeto-api",
+      "defaultValue": "screensound-webapp",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }

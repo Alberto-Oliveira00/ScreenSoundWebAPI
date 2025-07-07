@@ -11,16 +11,18 @@
         <MudText Typo="Typo.body2">Artista/Banda:@Musica!.NomeArtista</MudText>
     </MudCardContent>
     <MudCardActions>
-    <MudButton Color="Color.Warning"
-            Variant="Variant.Outlined"
-            Href=@($"/EditarMusica/{Musica!.Nome}")>Detalhes
+        <MudButton Color="Color.Warning"
+                   Variant="Variant.Outlined"
+                   Href=@($"/EditarMusica/{Musica!.Nome}")>Detalhes
         </MudButton>
-</MudCardActions>
+    </MudCardActions>
 </MudCard>
 
 @code {
     [Parameter]
     public MusicaResponse? Musica { get; set; }
+
+    public ArtistaResponse? Artista { get; set; }
 
     public string Imagem { get; set; } = "images/cardArtista.jpg";
 
@@ -28,10 +30,11 @@
     {
         if (!string.IsNullOrWhiteSpace(Musica?.NomeArtista))
         {
-            var artista = await artistaAPI.GetArtistaPorNomeAsync(Musica.NomeArtista);
-            if (!string.IsNullOrWhiteSpace(artista?.FotoPerfil))
+            var artistaEncontrado = await artistaAPI.GetArtistaPorNomeAsync(Musica.NomeArtista);
+            
+            if (artistaEncontrado != null && !string.IsNullOrWhiteSpace(artistaEncontrado.FotoPerfil))
             {
-                Imagem = $"https://localhost:7230{artista.FotoPerfil}";
+                Imagem = artistaEncontrado.FotoPerfil;
             }
         }
     }

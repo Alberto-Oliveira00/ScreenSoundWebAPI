@@ -11,6 +11,8 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddAzureAppConfiguration("Endpoint=https://screensoundv0-configuration.azconfig.io;Id=hp7x;Secret=75ZApqDpJLAimZkE1rILWkE2KXgnFpfAI09yANNPmQKxM8cFg3IPJQQJ99BGACZoyfiWQ10HAAACAZAC3wTN");
+
 builder.Services.AddDbContext<ScreenSoundContext>((options) => {
     options
             .UseSqlServer(builder.Configuration["ConnectionStrings:ScreenSoundDB"])
@@ -26,7 +28,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("BlazorAppOrigin", // Nome da sua política CORS
         policy =>
         {
-            policy.WithOrigins("https://localhost:7117") // <<<< USE A URL EXATA DA SUA ORIGEM BLazor
+            policy.WithOrigins("https://screensound-webapp-eygwgachadascdcg.brazilsouth-01.azurewebsites.net") // <<<< USE A URL EXATA DA SUA ORIGEM BLazor
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });

@@ -24,6 +24,6 @@
 
     protected override void OnInitialized()
     {
-        Imagem = Artista!.FotoPerfil!.Contains("Foto") ? $"https://localhost:7230/{Artista!.FotoPerfil}" : "images/cardArtista.jpg";
+        Imagem = string.IsNullOrEmpty(Artista?.FotoPerfil) ? "images/cardArtista.jpg" : Artista.FotoPerfil;
     }
 }
