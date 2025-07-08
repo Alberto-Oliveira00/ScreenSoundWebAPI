@@ -9,7 +9,7 @@ Uma plataforma web para cadastro e gerenciamento de músicas, artistas e gênros
 * Entity Framework Core
 * ASP.NET Web API
 * Blazor WebAssembly
-* Azure Blob Storage
+* Cloud com Azure
 * SQL Server
 * Swagger
 
